@@ -41,8 +41,12 @@ def run(stdscr):
  
     playwin.resize(1, curses.COLS)
     playwin.mvwin(curses.LINES-1, 0)
-    
-    textwin.addstr(u_l+horiz*(curses.COLS-2)+u_r)
+   
+    top_text = "[Radio]"
+    if(((curses.COLS-2-len(top_text)) % 2) != 0):
+      top_text = top_text + " "
+    line = horiz * int((curses.COLS-2-len(top_text))/2)
+    textwin.addstr(u_l+line+top_text+line+u_r)
 
     mid = int((curses.LINES-3)/2)
     stat_range = range(mid-cursor_index, mid+(len(stations)-cursor_index))
@@ -69,12 +73,12 @@ def run(stdscr):
     textwin.insstr(l_l+horiz*(curses.COLS-2)+l_r)
 
     if (selected_index == -1):
-      s = " Select a channel"
+      bottom_text = " Select a channel"
     else:
-      s =  " Now playing: " + stations[selected_index][0]
-    spacing = " " *  (curses.COLS - len(s))
-    s = s + spacing
-    playwin.insstr(s, curses.color_pair(2))
+      bottom_text =  " Now playing: " + stations[selected_index][0]
+    spacing = " " *  (curses.COLS - len(bottom_text))
+    bottom_text = bottom_text + spacing
+    playwin.insstr(bottom_text, curses.color_pair(2))
     textwin.refresh()
     playwin.refresh()
     
