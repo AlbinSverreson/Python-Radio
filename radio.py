@@ -18,7 +18,7 @@ def run(stdscr):
   curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
   valid = ["KEY_DOWN", "KEY_UP", "p", "q", "Q"]
 
-  f = open("stations.csv", 'r')
+  f = open(sys.path[0]+"/stations.csv", 'r')
   stations = [l.split(',') for l in f.read().splitlines()]
   f.close()
 
@@ -33,9 +33,9 @@ def run(stdscr):
   u_r = "┐"
   l_l = "└"
   l_r = "┘" 
-  curses.curs_set(0)
   
   while(True): 
+    curses.curs_set(0)
     curses.update_lines_cols()
     textwin.resize(curses.LINES-1, curses.COLS)
  
