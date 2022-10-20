@@ -16,7 +16,7 @@ def run(stdscr):
   curses.use_default_colors()
   curses.init_pair(1, curses.COLOR_GREEN, -1)
   curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
-  valid = ["KEY_DOWN", "KEY_UP", "p", "q", "Q"]
+  valid = ["KEY_DOWN", "KEY_UP", "q", "Q", repr("\n")]
 
   f = open(sys.path[0]+"/stations.csv", 'r')
   stations = [l.split(',') for l in f.read().splitlines()]
@@ -83,9 +83,9 @@ def run(stdscr):
     playwin.refresh()
     
     keypress = textwin.getkey()
-    while(not keypress in valid):
+    while(not keypress in valid and not repr(keypress) in valid):
       keypress = textwin.getkey()
-
+    
     if(keypress == "KEY_DOWN" and (cursor_index != len(stations)-1)):
       cursor_index = cursor_index + 1
     elif(keypress == "KEY_UP" and (cursor_index != 0)):
@@ -94,7 +94,7 @@ def run(stdscr):
       if(running):
         proc.terminate()
       sys.exit(0)
-    elif(keypress == "p"):
+    elif(repr(keypress) == repr("\n")):
       selected_index = cursor_index
       if(not running):
         proc = subprocess.Popen(["mpv", stations[selected_index][1]], \
