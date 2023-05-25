@@ -7,7 +7,7 @@ import subprocess
 import math
 import datetime
 import curses
-from curses import wrapper
+from pathlib import Path
 
 def run(stdscr):
   running = False
@@ -16,9 +16,9 @@ def run(stdscr):
   curses.use_default_colors()
   curses.init_pair(1, curses.COLOR_GREEN, -1)
   curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
-  valid = ["KEY_DOWN", "KEY_UP", "q", "Q", repr("\n")]
+  valid = ["KEY_DOWN", "KEY_UP", "q", "Q", repr("\n"), "KEY_RESIZE"]
 
-  f = open(sys.path[0]+"/stations.csv", 'r')
+  f = open(f"{Path.home()}/stations.csv", 'r')
   stations = [l.split(',') for l in f.read().splitlines()]
   f.close()
 
@@ -32,16 +32,16 @@ def run(stdscr):
   u_l = "┌"
   u_r = "┐"
   l_l = "└"
-  l_r = "┘" 
-  
-  while(True): 
+  l_r = "┘"
+
+  while(True):
     curses.curs_set(0)
     curses.update_lines_cols()
     textwin.resize(curses.LINES-1, curses.COLS)
- 
+
     playwin.resize(1, curses.COLS)
     playwin.mvwin(curses.LINES-1, 0)
-   
+
     top_text = "[Radio]"
     if(((curses.COLS-2-len(top_text)) % 2) != 0):
       top_text = top_text + " "
@@ -66,10 +66,10 @@ def run(stdscr):
           textwin.addstr(vert)
         else:
           textwin.addstr(vert+spacing+s+spacing+vert)
-          
+
       else:
         textwin.addstr(vert+" "*(curses.COLS-2)+vert)
-      
+
     textwin.insstr(l_l+horiz*(curses.COLS-2)+l_r)
 
     if (selected_index == -1):
@@ -81,11 +81,11 @@ def run(stdscr):
     playwin.insstr(bottom_text, curses.color_pair(2))
     textwin.refresh()
     playwin.refresh()
-    
+
     keypress = textwin.getkey()
     while(not keypress in valid and not repr(keypress) in valid):
       keypress = textwin.getkey()
-    
+
     if(keypress == "KEY_DOWN" and (cursor_index != len(stations)-1)):
       cursor_index = cursor_index + 1
     elif(keypress == "KEY_UP" and (cursor_index != 0)):
@@ -95,30 +95,19 @@ def run(stdscr):
         proc.terminate()
       sys.exit(0)
     elif(repr(keypress) == repr("\n")):
-      selected_index = cursor_index
       if(not running):
-        proc = subprocess.Popen(["mpv", stations[selected_index][1]], \
+        selected_index = cursor_index
+        proc = subprocess.Popen(["ffplay", "-nodisp", stations[selected_index][1]], \
           stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         running = True
-      else:
+      elif(cursor_index == selected_index):
+        selected_index = -1
         proc.terminate()
-        proc = subprocess.Popen(["mpv", stations[selected_index][1]], \
+        running = False
+      else:
+        selected_index = cursor_index
+        proc.terminate()
+        proc = subprocess.Popen(["ffplay","-nodisp", stations[selected_index][1]], \
           stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        
-        
-        
 
-#TODO_done: gör exit
-
-#TODO_done: gör riktig selection
-
-#TODO_done: fixa färg igen
-
-#TODO: spela lite radio kanske idk....
-
-#TODO: fixa enter-knappen testa noecho i guess
-
-#TODO: strukturera koden pls
-
-#TODO: optimera
-wrapper(run) 
+curses.wrapper(run)

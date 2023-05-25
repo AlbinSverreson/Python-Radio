@@ -1,8 +1,8 @@
-Sveriges Radio P1,https://sverigesradio.se/topsy/direkt/132-hi-mp3.m3u 
-Sveriges Radio P2,https://sverigesradio.se/topsy/direkt/2562-hi-mp3.m3u
-Sveriges Radio P3,https://sverigesradio.se/topsy/direkt/164-hi-mp3.m3u
-Sveriges Radio P4 Malmöhus,https://sverigesradio.se/topsy/direkt/207-hi-mp3.m3u
-P3 Din Gata,https://sverigesradio.se/topsy/direkt/2576-hi-mp3.m3u
+Sveriges Radio P1,https://live-cdn.sr.se/pool2/p1/p1.isml/p1-audio=192000.m3u8
+Sveriges Radio P2,https://live-cdn.sr.se/pool2/p2musik/p2musik.isml/p2musik-audio=192000.m3u8
+Sveriges Radio P3,https://live-cdn.sr.se/pool1/p3/p3.isml/p3-audio=192000.m3u8
+Sveriges Radio P4 Malmöhus,https://live-cdn.sr.se/pool2/p4malmo/p4malmo.isml/p4malmo-audio=192000.m3u8
+P3 Din Gata,https://live-cdn.sr.se/pool3/dingata/dingata.isml/dingata-audio=192000.m3u8
 RIX FM,http://fm01-ice.stream.khz.se/fm01_mp3
 Mix Megapol,http://tx-bauerse.sharp-stream.com/http_live.php?i=mixmegapol_instream_se_mp3
 NRJ,http://tx-bauerse.sharp-stream.com/http_live.php?i=nrj_instreamtest_se_mp3
